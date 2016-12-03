@@ -4,7 +4,6 @@ import (
 	"io/ioutil"
 	"log"
 	"fmt"
-	"strings"
 	"adventofcode2016/day3/tasks"
 )
 
@@ -15,7 +14,7 @@ func main() {
 		log.Fatalf("Unable to open file %s", filename)
 		return
 	}
-	lines := strings.Split(string(content), "\n")
 
-	fmt.Println("Part 1 valid triangles", tasks.Part1ValidTriangleCount(lines))
+	fmt.Println("Part 1 valid triangles", tasks.Part1ValidTriangleCount(string(content)))
+	fmt.Println("Part 2 valid triangles", tasks.Part2ValidTriangleCount(string(content)))
 }
