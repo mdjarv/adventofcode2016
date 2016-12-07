@@ -4,7 +4,7 @@ import (
 	"io/ioutil"
 	"log"
 	"strings"
-	"adventofcode2016/day6/tasks"
+	"adventofcode2016/day7/tasks"
 	"fmt"
 )
 
@@ -17,5 +17,6 @@ func main() {
 	}
 	lines := strings.Split(string(content), "\n")
 
-	tasks.Day7Part1(lines)
+	fmt.Println("Part 1: found", tasks.Day7Part1(lines), "addresses with TLS support")
+	fmt.Println("Part 2: found", tasks.Day7Part2(lines), "addresses with SSL support")
 }
