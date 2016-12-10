@@ -4,7 +4,6 @@ import (
 	"regexp"
 	"strconv"
 	"bytes"
-	"fmt"
 )
 
 type Marker struct {
@@ -66,49 +65,50 @@ func Day9Part1(line string) int {
 	return len([]rune(DecompressString(line)))
 }
 
-func getSizeOfData(line string, offset int) (int, string) {
-	fmt.Println("processing", line, "from offset", offset)
-	size := 0
-	remainder := ""
+func findAllMarkers(line string) ([]Marker, int) {
+	markers := []Marker{}
+	remainder := bytes.Buffer{}
 
-	marker, ok := findMarker(line, offset)
+	marker, ok := findMarker(line, 0)
 	if !ok {
-		size += len([]rune(line))
-		fmt.Println("  no markers, returning size", size)
-		return size, remainder
+		// No markers
+		remainder.WriteString(line)
 	}
 	for ok {
-		prefix := line[offset:marker.start]
-		prefixSize := len([]rune(prefix))
-		size += prefixSize
-		fmt.Println("  prefix", prefix, "size", prefixSize, "marker inner content", marker.str)
-		fmt.Println("  processing marker", marker.str, "*", marker.repeat)
-
-		innerMarker, hasInnerMarker := findMarker(marker.str, 0)
-		if hasInnerMarker {
-			fmt.Println("  has inner marker", innerMarker.str)
-			innerSize, _ := getSizeOfData(innerMarker.str, 0)
-			fmt.Println("  inner marker returned with size", innerSize, "multiplying with", innerMarker.repeat)
-			size += innerSize * innerMarker.repeat * marker.repeat
-		} else {
-			currentSize := len([]rune(marker.str)) * marker.repeat
-			fmt.Println("  no inner marker, appending", currentSize)
-			size += currentSize
-		}
-
-		remainder = line[marker.end + marker.characters:]
-		offset = marker.end + marker.characters
+		markers = append(markers, marker)
 		marker, ok = findMarker(line, marker.end + marker.characters)
 	}
 
-	fmt.Println("  returning", size)
-	return size, remainder
+	for i, marker := range markers {
+		if i == 0 && markers[i].start > 0 {
+			remainder.WriteString(line[:marker.start])
+		}
+		if len(markers) > 1 && i > 0 {
+			remainder.WriteString(line[markers[i - 1].end + markers[i - 1].characters:markers[i].start])
+		}
+		if i == len(markers) - 1 {
+			s := marker.end + marker.characters
+			if s < len([]rune(line)) {
+				remainder.WriteString(line[s:])
+			}
+		}
+	}
+
+	return markers, remainder.Len()
+}
+
+func getV2Size(line string) int {
+	markers, size := findAllMarkers(line)
+	if len(markers) == 0 {
+		return size
+	} else {
+		for _, marker := range markers {
+			size += getV2Size(marker.str) * marker.repeat
+		}
+	}
+	return size
 }
 
 func Day9Part2(line string) int {
-	size, remainder := getSizeOfData(line, 0)
-	size += len([]rune(remainder))
-	fmt.Println("FINAL SIZE", size)
-
-	return size
+	return getV2Size(line)
 }

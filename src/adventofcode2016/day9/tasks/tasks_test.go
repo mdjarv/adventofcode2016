@@ -2,11 +2,10 @@ package tasks
 
 import (
 	"testing"
-	"fmt"
 )
 
 type testpair struct {
-	input string
+	input  string
 	output interface{}
 }
 
@@ -45,7 +44,6 @@ func TestDay8Part1(t *testing.T) {
 
 func TestDay8Part2(t *testing.T) {
 	for _, pair := range testDataPart2 {
-		fmt.Println()
 		result := Day9Part2(pair.input)
 		if result != pair.output {
 			t.Error(
