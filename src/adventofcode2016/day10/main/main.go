@@ -17,5 +17,5 @@ func main() {
 	}
 	lines := strings.Split(string(content), "\n")
 	fmt.Println("Day 10 Part 1:", tasks.Day10Part1(lines, 61, 17))
-	//fmt.Println("Day 10 Part 2:", tasks.Day10Part2(lines))
+	fmt.Println("Day 10 Part 2:", tasks.Day10Part2(lines, 61, 17))
 }
