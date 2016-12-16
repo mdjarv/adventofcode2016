@@ -21,7 +21,7 @@ var testDataPart1 = []testpair{
 }
 
 
-func TestDay8Part1(t *testing.T) {
+func TestDay11Part1(t *testing.T) {
 	for _, pair := range testDataPart1 {
 		result := Day11Part1(pair.input)
 		if result != pair.output {
@@ -33,4 +33,3 @@ func TestDay8Part1(t *testing.T) {
 		}
 	}
 }
-
