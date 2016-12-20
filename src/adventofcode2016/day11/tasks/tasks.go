@@ -7,8 +7,8 @@ import (
 )
 
 type State struct {
-	elevator int
-	floor    [4]byte
+	elevator      int
+	floor         [4]byte
 	previousState *State
 }
 
@@ -65,6 +65,11 @@ func stateFromLines(lines []string) State {
 
 	}
 	return state
+}
+
+type State struct {
+	elevator int
+	floors   [4]byte
 }
 
 func Day11Part1(lines []string) int {
